@@ -50,71 +50,110 @@ genres
 
 P.S. Функции вызывать не обязательно*/
 
+
+
+
 'use strict';
 
-let numberOfFilms;
-
-function start() {
-    numberOfFilms = +prompt("Сколько фильмов вы уже посмотрели?", "Only Numbers");
-    while (numberOfFilms == "" || numberOfFilms == null || isNaN(numberOfFilms)) {
-        numberOfFilms = +prompt("Сколько фильмов вы уже посмотрели?", "Only Numbers");
-    }
-}
-start();
 
 const personalMovieDB = {
-    count: numberOfFilms,
+    count: 0,
     movies: {},
     actors: {},
     genres: [],
-    privat: false
-};
+    privat: false,
 
-function rememberMyFilms() {
-    for (let i = 0; i < numberOfFilms; i++) {
-        const film = prompt('Один из последних просмотренных фильмов?', "");
-        const estimation = +prompt('На сколько оцените его?', "from 1 to 5");
+    start: function () {
+        personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "Only Numbers");
+        while (personalMovieDB.count == "" || personalMovieDB.count == null || isNaN(personalMovieDB.count)) {
+            personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "Only Numbers");
+        }
+    },
 
-        if (film != null && estimation != null && film != '' && estimation != '' && film.length <= 50) {
-            personalMovieDB.movies[film] = estimation;
-            alert('you are Good!');
+    rememberMyFilms: function () {
+        for (let i = 0; i < numberOfFilms; i++) {
+            const film = prompt('Один из последних просмотренных фильмов?', "");
+            const estimation = +prompt('На сколько оцените его?', "from 1 to 5");
+
+            if (film != null && estimation != null && film != '' && estimation != '' && film.length <= 50) {
+                personalMovieDB.movies[film] = estimation;
+                alert('you are Good!');
+            } else {
+                alert('Are you kidding ? ? ? ? ? Жопошник!!!!');
+                i--;
+            }
+        }
+
+    },
+
+    detectPersonalLevel: function () {
+        if (personalMovieDB.count < 10) {
+            alert("Просмотрено довольно мало фильмов");
+        } else if (personalMovieDB.count >= 10 || personalMovieDB.count < 30) {
+            alert("Вы классический зритель");
+        } else if (personalMovieDB.count >= 10) {
+            alert("Вы Кинонаркоман");
         } else {
-            alert('Are you kidding ? ? ? ? ? Жопошник!!!!');
-            i--;
+            alert("Shit happen");
+        }
+
+    },
+
+    showMyDB: function () {
+        if (personalMovieDB.privat == false) {
+            console.log(personalMovieDB);
+        }
+
+    },
+    /* Задание на урок:
+
+1) У нас уже есть рабочее приложение, состоящее из отдельных функций. Представьте, что
+перед вами стоит задача переписать его так, чтобы все функции стали методами объекта personalMovieDB
+Такое случается в реальных продуктах при смене технологий или подхода к архитектуре программы
+
+2) Создать метод toggleVisibleMyDB, который при вызове будет проверять свойство privat. Если оно false - он
+переключает его в true, если true - переключает в false. Протестировать вместе с showMyDB.
+
+3) В методе writeYourGenres запретить пользователю нажать кнопку "отмена" или оставлять пустую строку. 
+Если он это сделал - возвращать его к этому же вопросу. После того, как все жанры введены - 
+при помощи метода forEach вывести в консоль сообщения в таком виде:
+"Любимый жанр #(номер по порядку, начиная с 1) - это (название из массива)"*/
+
+    writeYourGenres: function () {
+        for (let i = 1; i <= 3; i++) {
+            let gen = prompt("Ваш любимый жанр под номером " + i);
+            if (gen == null || gen == "" || gen == " ") {
+                i--;
+            } else {
+                personalMovieDB.genres[i - 1] = gen;
+            
+            }
+        }
+        personalMovieDB.genres.forEach((item, i) => {
+            console.log(`Favourite ganre #${i+1} - it's ${item}`);
+        });
+    },
+
+    toggleVisibleMyDB: function () {
+        if (personalMovieDB.privat == false) {
+            personalMovieDB.privat = true;
+        } else if (personalMovieDB.privat == true) {
+            personalMovieDB.privat = false;
         }
     }
 
-}
-//rememberMyFilms();
+};
 
-function detectPersonalLevel() {
-    if (personalMovieDB.count < 10) {
-        alert("Просмотрено довольно мало фильмов");
-    } else if (personalMovieDB.count >= 10 || personalMovieDB.count < 30) {
-        alert("Вы классический зритель");
-    } else if (personalMovieDB.count >= 10) {
-        alert("Вы Кинонаркоман");
-    } else {
-        alert("Shit happen");
-    }
+//personalMovieDB.start();
 
-}
-//detectPersonalLevel();
+//personalMovieDB.rememberMyFilms();
 
-function showMyDB() {
-    if (personalMovieDB.privat == false) {
-        console.log(personalMovieDB);
-    }
-}
-showMyDB();
+//personalMovieDB.detectPersonalLevel();
 
-function writeYourGenres() {
-    for (let i=1; i<=3; i++) {
-     let gen = prompt("Ваш любимый жанр под номером "+ i);
-     personalMovieDB.genres[i-1] = gen;
-    }
-}
+//personalMovieDB.showMyDB();
 
-
-writeYourGenres();
+personalMovieDB.writeYourGenres();
 console.log(personalMovieDB.genres);
+
+
+//personalMovieDB.toggleVisibleMyDB();
