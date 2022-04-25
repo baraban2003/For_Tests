@@ -123,11 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modalCloseBtn.addEventListener('click', closeModal);
 
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
+    /*    modal.addEventListener('click', (e) => {
+           if (e.target === modal) {
+               closeModal();
+           }
+       }); */
 
     //закрытие подалки при нажатии эскейп на клаве
     document.addEventListener('keydown', (e) => {
